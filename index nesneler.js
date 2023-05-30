@@ -15,11 +15,18 @@ const serpmeKahvalti = {isim: "Serpme Kahvaltı", fiyat: 16, kategori:"Kahvaltı
 */
 
 
-function MenuElemaniOlustur(/*Kodlar buraya*/){
-	/*Kodlar buraya*/
-}
-
-
+function MenuElemaniOlustur(isim, fiyat, kategori) {
+	return {
+	  isim: isim,
+	  fiyat: fiyat,
+	  kategori: kategori
+	};
+  }
+  
+  // Örnek kullanım:
+  var menuElemani = MenuElemaniOlustur('Cheeseburger', 8, 'Burgerler');
+  console.log(menuElemani);
+  
 
 /*  Görev 1b (otomatik test yok): 
 	Fonksiyonu çağırın!
@@ -46,15 +53,33 @@ function MenuElemaniOlustur(/*Kodlar buraya*/){
 */
 
 
+
+
 const burger = {
-	isim: "Burger", 
-	fiyat: 18, 
-	kategori: "Öğle Yemeği", 
-
-}
-
-
-
+	ad: "Cheeseburger",
+	fiyat: 18,
+	kategori: "Öğle Yemeği",
+	indirim: function (kisi) {
+	  let indirimOrani = 0;
+	  
+	  if (kisi === "öğretmen") {
+		indirimOrani = 0.25;
+	  } else if (kisi === "öğrenci") {
+		indirimOrani = 0.25;
+	  } else if (kisi === "diğer") {
+		indirimOrani = 0.10;
+	  }
+	  
+	  const indirimliFiyat = this.fiyat - (this.fiyat * indirimOrani);
+	  return indirimliFiyat;
+	}
+  };
+  
+  // Örnek kullanım:
+  console.log(burger.indirim("öğretmen")); // 13.5
+  console.log(burger.indirim("diğer")); // 16.2
+  
+  
 ///////////////Değerlendirmeler (MVP)///////////////////
 const degerlendirmeler = [
     {isim: "Nalan", puan: 5, geribildirim:"Mükemmel atmosfer ve mükemmel vegan seçenekleri!"},
@@ -72,6 +97,7 @@ const degerlendirmeler = [
 	1. Sadece Ahmet'in geribildirimini konsolda görüntüleyin - fonksiyona gerek yok
 */
 
+console.log(degerlendirmeler.find(degerlendirme => degerlendirme.isim === "Ahmet").geribildirim);
 
 
 /*  Görev 4 (ototest yok):  
@@ -80,6 +106,8 @@ const degerlendirmeler = [
 	2. degerlendirmeler dizisini konsolda görüntüleyerek çalışmanızı kontrol edin
 */
 
+degerlendirmeler.find(degerlendirme => degerlendirme.isim === "Reyna").geribildirim = "Bu mekan bir harika dostum, yine de garsonun gülümsememesinden puan kırdım";
+console.log(degerlendirmeler);
 
 
 /*  Görev 5: 
@@ -94,11 +122,26 @@ const degerlendirmeler = [
 */
 
 
-function DegerlendirmeEkle(/*Kodlar buraya */){
-	/*Kodlar buraya */
-	
-}
-
+function DegerlendirmeEkle(degerlendirme, isim, puan, geribildirim) {
+	const yeniDegerlendirme = {
+	  isim: isim,
+	  puan: puan,
+	  geribildirim: geribildirim
+	};
+  
+	return [...degerlendirme, yeniDegerlendirme];
+  }
+  
+  // Örnek kullanım:
+  const degerlendirme = [
+	{ isim: "Ahmet", puan: 4, geribildirim: "Güzel yemekler!" },
+	{ isim: "Mehmet", puan: 5, geribildirim: "Harika bir deneyim!" }
+  ];
+  
+  const yeniDegerlendirmeler = DegerlendirmeEkle(degerlendirmeler, "Hurşut", 2, "Boktan yemekler!");
+  
+  console.log(yeniDegerlendirmeler);
+  
 
 
 /*  Görev 6: 
@@ -112,10 +155,39 @@ function DegerlendirmeEkle(/*Kodlar buraya */){
 */
 
 
-function AnahtardanDegerlendirmeAl(/*Kodlar buraya*/) {
-	/*Kodlar buraya*/
-
-}
+function AnahtardanDegerlendirmeAl(degerlendirmeler, indeks) {
+	
+	const degerlendirme = degerlendirmeler[indeks];
+  
+	
+	if (degerlendirme) {
+	  
+	  const { isim, puan, geribildirim } = degerlendirme;
+  
+	  
+	  const sonuc = `${isim} isimli kişi ${puan} puan verdi ve şunları yazdı: ${geribildirim}`;
+  
+	  
+	  return sonuc;
+	} else {
+	  
+	  return "Geçersiz indeks!";
+	}
+  }
+  
+  
+  const degerlendirmeler1 = [
+	{ isim: "Nalan", puan: 5, geribildirim: "Mükemmel atmosfer ve mükemmel vegan seçenekleri!" },
+	{ isim: "Kuddusi", puan: 3, geribildirim: "Benim zevkime göre biraz fazla yenilikçi, burger iyi ama fiyatı yüksek" },
+	{ isim: "Kamuran", puan: 4, geribildirim: "eğlenceli bilgiler ve havalı hisler" },
+	
+  ];
+  
+  const indeks = 0; 
+  
+  const sonuc = AnahtardanDegerlendirmeAl(degerlendirmeler, indeks);
+  console.log(sonuc);
+  
 
 
 
@@ -132,11 +204,40 @@ function AnahtardanDegerlendirmeAl(/*Kodlar buraya*/) {
 */
 
 
-function SonDegerlendirmeyiAl(/*Kodlar buraya*/) {
-	/*Kodlar buraya*/
-} 
-
-
+function SonDegerlendirmeyiAl(degerlendirmeler) {
+	
+	const uzunluk = degerlendirmeler.length;
+  
+	
+	if (uzunluk > 0) {
+	  
+	  const sonDegerlendirme = degerlendirmeler[uzunluk - 1];
+  
+	  
+	  const { isim, puan, geribildirim } = sonDegerlendirme;
+  
+	  
+	  const sonuc = `${isim} isimli kişi ${puan} puan verdi ve şunları yazdı: ${geribildirim}`;
+  
+	  
+	  return sonuc;
+	} else {
+	 
+	  return "Degerlendirmeler dizisi boş!";
+	}
+  }
+  
+  
+  const degerlendirmeler2 = [
+	{ isim: "Nalan", puan: 5, geribildirim: "Mükemmel atmosfer ve mükemmel vegan seçenekleri!" },
+	{ isim: "Kuddusi", puan: 3, geribildirim: "Benim zevkime göre biraz fazla yenilikçi, burger iyi ama fiyatı yüksek" },
+	{ isim: "Kamuran", puan: 4, geribildirim: "eğlenceli bilgiler ve havalı hisler" },
+	
+  ];
+  
+  const sonDegerlendirme = SonDegerlendirmeyiAl(degerlendirmeler);
+  console.log(sonDegerlendirme);
+  
 
 /////////////// BONUS  GÖRVLER////////////////////
 
